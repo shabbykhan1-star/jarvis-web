@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JARVIS" />
+  <meta name="description" content="JARVIS — your private, iPhone-first creator planner and task assistant." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="icons/jarvis-192.png" />
+  <link rel="apple-touch-icon" href="icons/jarvis-192.png" />
+  <title>JARVIS — Personal Command Center</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2e;--panel2:#11243b;--txt:#f0f6ff;--dim:#a2b3ca;--line:#203750;--aqua:#63e3e2;--blue:#70a9ff;--green:#7fe3b5;--red:#ff9292;--gold:#e9c780;--r:20px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#12375a 0%,transparent 37%),var(--bg);color:var(--txt);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100svh}button,input,textarea,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}.wrap{width:min(720px,100%);margin:auto;padding:env(safe-area-inset-top) 18px calc(116px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;justify-content:space-between;padding:22px 0 17px;gap:12px}.logo{display:flex;align-items:center;gap:11px}.orb{height:47px;width:47px;border:2px solid #4bc4db;border-radius:50%;display:grid;place-items:center;color:var(--aqua);background:radial-gradient(circle,#1e75917d,#0b1b2e 70%);box-shadow:0 0 0 6px #62dce210,0 0 28px #38c4ec30;font-size:25px}.eyebrow{letter-spacing:.15em;text-transform:uppercase;color:var(--aqua);font-size:10px;font-weight:800}.logo h1{font-size:19px;letter-spacing:.15em;margin:0;line-height:1.1}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #315575;background:#102e43;border-radius:99px;padding:7px 10px;color:#a7ddf5;font-size:11px;white-space:nowrap}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green)}h2{margin:0;font-size:22px;line-height:1.25}h3{margin:0;font-size:16px}.sub{color:var(--dim);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card{border:1px solid var(--line);border-radius:var(--r);padding:16px;background:linear-gradient(150deg,#122840e8,#0b192bea)}.hero{position:relative;overflow:hidden;padding:23px 19px;background:linear-gradient(120deg,#143858,#0b1d30 85%)}.hero:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #5fd9ec24;border-radius:50%;right:-115px;top:-90px;box-shadow:0 0 0 34px #5fd9ec08,0 0 0 70px #5fd9ec05;pointer-events:none}.hero h2{font-size:24px;margin:7px 0}.mini-title{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.10em;font-weight:800}.section{margin:22px 0 11px;display:flex;align-items:center;justify-content:space-between;gap:8px}.section h3{font-size:17px}.stat{font-size:25px;font-weight:800;line-height:1.2}.tag{display:inline-block;font-size:11px;font-weight:700;border-radius:8px;padding:4px 8px;background:#163b4b;color:var(--aqua)}.small{font-size:12px}.muted{color:var(--dim)}.note{border-left:2px solid var(--aqua);padding:9px 12px;background:#102538;line-height:1.5;color:#d6ecf6;border-radius:0 11px 11px 0}.btn{border:1px solid #2a5274;background:#163653;color:#eaf7ff;padding:11px 13px;border-radius:13px;font-weight:700;min-height:42px}.btn.primary{background:linear-gradient(125deg,#59d3da,#8bafff);color:#071524;border:0}.btn.secondary{background:#122a40}.btn.ghost{background:transparent;color:var(--dim);border-color:#203b55}.btn.danger{color:#ffc1c1;border-color:#6b3644}.btn:active{transform:scale(.98)}.btn-row{display:flex;flex-wrap:wrap;gap:8px}.input,textarea{background:#071827;border:1px solid #2b465d;border-radius:12px;color:white;padding:12px 13px;width:100%;font-size:16px}textarea{min-height:100px;resize:vertical}.form-row{display:flex;gap:8px}.form-row .input{min-width:0;flex:1}.form-group{display:grid;gap:5px;margin-bottom:12px}.form-group label{font-size:12px;color:var(--dim);font-weight:700}.hidden{display:none!important}.tabview{display:none}.tabview.active{display:block;animation:appear .2s ease}@keyframes appear{from{opacity:.7;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}.bottom{position:fixed;bottom:0;left:0;right:0;background:#071421f0;backdrop-filter:blur(20px);border-top:1px solid #2a3e54;z-index:10;padding-bottom:env(safe-area-inset-bottom)}.nav{max-width:720px;margin:auto;display:grid;grid-template-columns:repeat(6,1fr);gap:1px;padding:7px 7px 6px}.navbtn{color:#92a6c1;background:transparent;border:0;display:grid;justify-items:center;gap:2px;border-radius:13px;padding:7px 1px;font-size:10px;font-weight:700}.navbtn svg{height:22px;width:22px}.navbtn.active{color:var(--aqua);background:#142d43}.task{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.check{margin-top:2px;width:22px;height:22px;accent-color:var(--aqua);flex-shrink:0}.task-title{overflow-wrap:anywhere;font-weight:650}.task.done .task-title{text-decoration:line-through;color:#70859b}.task-meta{font-size:11px;color:var(--dim)}.delete{margin-left:auto;flex-shrink:0;background:transparent;border:0;color:#ad8697;font-size:21px;padding:0 5px}.idea{display:grid;gap:9px}.idea .topic{color:var(--aqua);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:800}.idea .shot{background:#071a29;border:1px dashed #30526a;border-radius:12px;padding:12px;font-size:13px;color:#c5dfef}.chat{height:245px;overflow:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:14px;scrollbar-width:thin}.bubble{border-radius:15px;padding:10px 12px;max-width:92%;font-size:13px;overflow-wrap:anywhere}.bubble.assistant{align-self:start;background:#142f44;border:1px solid #2d5268}.bubble.user{align-self:end;background:#203961}.mood{display:inline-flex;margin:5px 6px 0 0}.mood button{font-size:12px;padding:8px 10px;border:1px solid #28425b;background:#0c2338;color:#d4e5f7;border-radius:999px}.mood button.selected{border-color:var(--aqua);color:var(--aqua);background:#163a4b}.spacer{height:9px}.toast{position:fixed;bottom:calc(88px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#164d5e;border:1px solid #4abdc8;padding:10px 14px;border-radius:12px;color:#fff;font-size:13px;min-width:180px;text-align:center;box-shadow:0 10px 30px #0008;z-index:99;pointer-events:none}.text-end{text-align:right}.nobreak{white-space:nowrap}.divider{height:1px;background:var(--line);margin:16px 0}.trust{font-size:12px;color:#aebfd2}.voice-toggle{display:flex;align-items:center;gap:9px;color:var(--txt);font-size:14px}.voice-toggle input{width:21px;height:21px;accent-color:var(--aqua)}.testlist{padding-left:22px;color:#bdcee0}.testlist li{padding:3px 0}@media(max-width:360px){.wrap{padding-left:13px;padding-right:13px}.stat{font-size:20px}.card{padding:12px}.hero h2{font-size:21px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <div class="logo"><div class="orb" aria-hidden="true">◎</div><div><div class="eyebrow">Personal assistant</div><h1>JARVIS <span style="color:#78a3ba;font-size:10px;letter-spacing:0">WEB 1.1</span></h1></div></div>
+      <span class="pill"><span class="dot"></span> Local mode</span>
+    </header>
+
+    <section id="page-home" class="tabview active" aria-label="Dashboard">
+      <div class="card hero"><div class="eyebrow" id="today-label">Welcome back</div><h2 id="greeting">Ready when you are, boss.</h2><p class="sub" style="max-width:290px;margin:0 0 15px">Tumhara personal creator command center — planning, tasks aur memory ek jagah.</p><button class="btn primary" data-tab="assistant">Talk to JARVIS →</button></div>
+      <div class="section"><h3>Upload schedule</h3><span class="tag">2 videos / week</span></div>
+      <div class="grid"><div class="card"><div class="mini-title">Wednesday</div><div class="stat">Video 01</div><div class="sub" id="wed-next">—</div></div><div class="card"><div class="mini-title">Sunday</div><div class="stat">Video 02</div><div class="sub" id="sun-next">—</div></div></div>
+      <div class="section"><h3>Today's mission</h3></div>
+      <div class="card"><div class="tag" id="mission-tag">CREATOR TASK</div><h3 id="mission-title" style="margin:10px 0 5px">Plan your next vlog</h3><p class="sub" id="mission-detail" style="margin:0 0 13px"></p><div class="btn-row"><button class="btn primary" data-action="mission-task">Add mission to tasks</button><button class="btn secondary" data-tab="ideas">Explore ideas</button></div></div>
+      <div class="section"><h3>Quick overview</h3></div>
+      <div class="grid"><div class="card"><div class="mini-title">Open tasks</div><div class="stat" id="open-count">0</div><div class="sub">To complete</div></div><div class="card"><div class="mini-title">Memory notes</div><div class="stat" id="memory-count">0</div><div class="sub">Saved on this device</div></div></div>
+      <p class="trust" style="margin-top:16px">ℹ️ Trending topics aur daily push notifications abhi live nahi. Existing ChatGPT reminder ko daily alert ke liye use karo.</p>
+    </section>
+
+    <section id="page-tasks" class="tabview" aria-label="Tasks">
+      <div class="section"><h2>Task Control</h2><span class="tag" id="tasks-badge">0 OPEN</span></div>
+      <div class="card"><div class="form-group"><label for="new-task">New task</label><input id="new-task" class="input" placeholder="e.g. Sunday vlog shoot" maxlength="160"/></div><div class="form-row"><input id="task-date" class="input" type="date" aria-label="Task due date" /><button id="add-task" class="btn primary">Add task</button></div></div>
+      <div class="section"><h3>My tasks</h3><button id="clear-done" class="btn ghost small">Clear completed</button></div>
+      <div class="card" id="task-list"><p class="sub">No tasks yet.</p></div>
+      <p class="trust">Tasks stay in this browser's local storage. Export a backup from Settings before changing devices.</p>
+    </section>
+
+    <section id="page-ideas" class="tabview" aria-label="Video ideas">
+      <div class="section"><h2>Creator Lab</h2><span class="tag">Idea generator</span></div>
+      <div class="card"><div class="mini-title">Daily idea set</div><h3 style="margin-top:8px">Vlog + Food + Adventure</h3><p class="sub">Ye curated offline suggestions hain — verified live trends nahi.</p><button id="shuffle-ideas" class="btn primary">↻ Next 3 ideas</button></div>
+      <div id="ideas-list" style="display:grid;gap:12px;margin-top:12px"></div>
+      <div class="section"><h3>Your own topic</h3></div>
+      <div class="card"><div class="form-group"><label for="custom-topic">Video topic</label><input id="custom-topic" class="input" placeholder="e.g. Lahore street breakfast" maxlength="100" /></div><button id="custom-generate" class="btn secondary">Create title + thumbnail brief</button><div id="custom-result" class="hidden" style="margin-top:15px"></div></div>
+    </section>
+
+    <section id="page-memory" class="tabview" aria-label="Memory">
+      <div class="section"><h2>Private Memory</h2><span class="tag">On-device</span></div>
+      <div class="card"><div class="mini-title">My preferences</div><p class="sub">Known creator preferences, editable by you.</p><div class="form-group"><label for="channel-name">Channel name</label><input class="input" id="channel-name" maxlength="75" /></div><div class="form-group"><label for="thumbnail-style">Thumbnail style</label><textarea id="thumbnail-style" maxlength="600"></textarea></div><div class="form-group"><label for="assistant-tone">JARVIS response style</label><textarea id="assistant-tone" maxlength="600"></textarea></div><button class="btn primary" id="save-preferences">Save preferences</button></div>
+      <div class="section"><h3>Remember this</h3></div>
+      <div class="card"><div class="form-row"><input class="input" id="memory-input" maxlength="300" placeholder="e.g. Sunday video is about safari"/><button class="btn primary" id="add-memory">Save</button></div><div id="memory-list" style="margin-top:11px"></div></div>
+      <p class="trust">Important: ye memory ChatGPT ke account memory se connected nahi hai. Reset, browser data clear, ya device change karne se notes kho sakte hain.</p>
+    </section>
+
+    <section id="page-assistant" class="tabview" aria-label="Assistant">
+      <div class="section"><h2>Talk to JARVIS</h2><span class="tag">Local commands</span></div>
+      <div class="card"><div class="mini-title">Mood check-in (optional)</div><div class="mood" id="mood-choices"><button data-mood="focused">🎯 Focused</button><button data-mood="tired">😮‍💨 Tired</button><button data-mood="excited">⚡ Excited</button><button data-mood="stressed">🌧️ Stressed</button></div><p class="trust" id="mood-response" style="margin-bottom:0">Select a mood for a response style. JARVIS does not experience feelings.</p></div>
+      <div class="section"><h3>Command console</h3><button id="speak-latest" class="btn ghost small">🔊 Speak reply</button></div>
+      <div class="card"><div class="chat" id="chat" aria-live="polite"></div><div class="form-row"><input class="input" id="chat-input" maxlength="350" placeholder="Try: meri next upload kab hai?"/><button class="btn primary" id="send-chat">Send</button></div><p class="trust">Try: <b>add task: shoot intro</b> · <b>yaad rakho: no AI face</b> · <b>thumbnail idea</b> · <b>next upload</b>. iPhone keyboard mic can be used for dictation.</p></div>
+      <div class="section"><h3>Hinglish voice options</h3></div>
+      <div class="card"><div class="form-group"><label for="voice-language">iPhone voice accent (availability varies)</label><select id="voice-language" class="input"><option value="en-IN">Indian English — Hinglish-friendly</option><option value="ur-PK">Urdu — Pakistan</option><option value="hi-IN">Hindi — India</option></select></div><label class="voice-toggle"><input id="auto-speak" type="checkbox"/> <span>Speak each JARVIS chat reply automatically</span></label><div class="spacer"></div><button class="btn secondary" id="voice-preview">🔊 Test Hinglish voice</button><p class="trust">Ye iPhone ki available system voices use karta hai. Accent imperfect ho sakta hai. Voice sunne ke liye user interaction chahiye; app background mein hamesha listen nahi karti. Dictation ke liye keyboard microphone use karo.</p></div>
+      <p class="trust">Ye rule-based assistant hai; ChatGPT API ya real-time web access abhi connected nahi hai.</p>
+    </section>
+
+    <section id="page-settings" class="tabview" aria-label="Settings">
+      <div class="section"><h2>Settings & Testing</h2></div>
+      <div class="card"><h3>Local data backup</h3><p class="sub">Export your tasks, notes and preferences to a JSON file. Import it again to restore. Don't share private notes publicly.</p><div class="btn-row"><button class="btn primary" id="export-data">Export backup</button><button class="btn secondary" id="import-trigger">Import backup</button></div><input type="file" id="import-file" accept="application/json,.json" class="hidden"/><div class="divider"></div><button class="btn danger" id="reset-data">Reset all local data</button></div>
+      <div class="section"><h3>Build progress</h3></div><div class="card"><div class="mini-title">JARVIS WEB 1.1 · 24 October 2026</div><h3 style="margin:8px 0">Hinglish voice settings</h3><p class="sub">Voice accent select karo, reply autoplay on/off karo aur speaking test karo. Ye system text-to-speech hai — real conversational AI ya always-listening voice agent nahi.</p><p class="sub">Next priority: secure AI backend, mobile-first testing, private code sync.</p></div>
+      <div class="section"><h3>iPhone test checklist</h3></div>
+      <div class="card"><ol class="testlist"><li>Add a new task. Reload. Confirm it remains saved.</li><li>Check Wednesday and Sunday dates.</li><li>Generate 3 ideas and save one as a task.</li><li>Save a preference, refresh, and confirm it stays.</li><li>Export data, then test import with the same file.</li><li>After HTTPS hosting, Safari → Share → Add to Home Screen.</li></ol></div>
+      <p class="trust">Offline use requires loading the hosted app online at least once so its service worker can cache the files. This version has no backend, account login, live alerts, real AI model, or image generation.</p>
+      <div style="height:20px"></div><div class="text-end small muted">JARVIS WEB 1.1 · Private prototype</div>
+    </section>
+  </main>
+
+  <nav class="bottom" aria-label="Main navigation"><div class="nav" id="nav">
+    <button class="navbtn active" data-tab="home" aria-label="Home"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-8h6v8"/></svg>Home</button>
+    <button class="navbtn" data-tab="tasks" aria-label="Tasks"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 9 2 2 4-4M8 16h8"/></svg>Tasks</button>
+    <button class="navbtn" data-tab="ideas" aria-label="Ideas"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18h6m-6 3h6M9 15c-1-2-4-4-4-7a7 7 0 0 1 14 0c0 3-3 5-4 7z"/></svg>Ideas</button>
+    <button class="navbtn" data-tab="memory" aria-label="Memory"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 3c-6-2-10 5-7 9-3 5 3 11 8 8 6 2 10-6 6-10 1-5-3-9-7-7z"/><path d="M12 6v13M8 10h4m0 4h4"/></svg>Memory</button>
+    <button class="navbtn" data-tab="assistant" aria-label="Chat"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 5h16v12H9l-5 4z"/><path d="M8 10h8m-8 3h6"/></svg>JARVIS</button>
+    <button class="navbtn" data-tab="settings" aria-label="Settings"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3M4.9 4.9l2.2 2.2m9.8 9.8 2.2 2.2m0-14.2-2.2 2.2m-9.8 9.8-2.2 2.2"/></svg>Setup</button>
+  </div></nav>
+  <script src="app.js" defer></script>
+</body>
+</html>
