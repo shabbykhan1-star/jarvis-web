@@ -1,5 +1,16 @@
 # Project JARVIS — Development Log
 
+## 2026-10-24 — iPhone PWA online refresh / offline fallback patch
+
+**Changes:** Public shell requests in `sw.js` now use network-first responses and update the offline cache after successful online loads. Offline requests fall back to the cached shell. Cache keys ignore query parameters. Only six known same-origin public shell paths are intercepted; POST, cross-origin and arbitrary same-origin requests are bypassed. Service worker cache name changed to force refresh. Existing localStorage schema/key and all saved notes/tasks are untouched. Added `tests/sw.test.cjs` and README guidance.
+
+**Tests:** Locally ran `node --check sw.js`, `node --check tests/sw.test.cjs` and `node tests/sw.test.cjs`: passed simulated install/activate, online freshness, offline fallback, query normalization, bypass and cache cleanup. The connector does not run remote CI; no iPhone Safari or deployed-site test was performed.
+
+**Limitations:** Network-first may take longer to fall back on poor connections. Cached content can still be lost if Safari clears site data. No live AI backend, always-on voice, or notifications were added.
+
+**Next priority:** Test an online refresh, Home Screen offline launch and return-online update on the user's iPhone; then validate imported JSON backups more strictly before allowing restore.
+
+
 **Mission:** Build a private, useful iPhone-first AI assistant for the user (default Hinglish voice, addressing user as 'Boss') with secure permissioned task workflows.
 
 **Source of truth:** This repository once the user publishes it. A ChatGPT reminder is not a continuously running development daemon; each session only persists if changes are written to accessible durable storage.

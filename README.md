@@ -38,3 +38,6 @@ A web developer or static hosting provider can host this folder on any HTTPS sta
 - [ ] Go offline after first hosted load and check cached UI.
 
 Next implementation phase: authenticated private backend for LLM + trend tools, generated image thumbnail workflow, properly configured web push. Never place a paid API key in JavaScript source or a public repo.
+### Updating the iPhone PWA
+
+The public app shell now uses network-first loading with an offline fallback. After an update, open the hosted site **online once**, reload, and then test Home Screen launch in airplane mode. Saved notes and tasks remain on this browser only; keep a private JSON backup because Safari can clear local site data. Developer test: `node tests/sw.test.cjs` (mock service worker; not a physical iPhone acceptance test).
