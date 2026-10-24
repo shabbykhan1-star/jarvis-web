@@ -1,4 +1,4 @@
-# JARVIS WEB 1.1 — iPhone-only starter
+# JARVIS WEB 1.0 — iPhone-only starter
 
 **What this is:** A usable, no-Mac, iPhone-friendly Progressive Web App (PWA). It includes a responsive dashboard, Wednesday/Sunday upload schedule, local task manager, creator idea bank and thumbnail briefs, private notes/preferences, command-based chat, optional voice playback, and JSON export/import.
 
@@ -38,13 +38,3 @@ A web developer or static hosting provider can host this folder on any HTTPS sta
 - [ ] Go offline after first hosted load and check cached UI.
 
 Next implementation phase: authenticated private backend for LLM + trend tools, generated image thumbnail workflow, properly configured web push. Never place a paid API key in JavaScript source or a public repo.
-
-## Update: 2026-10-24 — WEB 1.1
-
-- Voice options in JARVIS tab: en-IN, ur-PK or hi-IN (best available iOS system voice); test spoken output.
-- Optional automatic spoken replies to user-triggered chat commands. Off by default.
-- Preferences persist in browser localStorage and are included in the app backup; previous v1 storage key is preserved.
-- Service-worker cache version bumped to load the update.
-- Limitations: system TTS pronunciation may vary; no continuous wake word, no true AI conversation or server-side code sync.
-
-See `DEVELOPMENT_LOG.md` for ongoing progress.

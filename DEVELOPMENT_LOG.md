@@ -1,24 +1,27 @@
 # Project JARVIS — Development Log
 
-**Mission:** Develop a useful iPhone-first personal assistant with Hinglish voice, safe task automation, personal memory, and Shabby Vlogs creator planning.
+**Mission:** Build a private, useful iPhone-first AI assistant for the user (default Hinglish voice, addressing user as 'Boss') with secure permissioned task workflows.
 
-**Source of truth:** This GitHub repository. A scheduled daily ChatGPT session is not a continuously running server. Each update must be committed to persist.
+**Source of truth:** This repository once the user publishes it. A ChatGPT reminder is not a continuously running development daemon; each session only persists if changes are written to accessible durable storage.
 
-## 2026-10-24 — WEB 1.1 published to GitHub
+## 2026-10-24 — WEB 1.1 (local artifact, not yet deployed)
 
-**Done:** Confirmed GitHub App installation and successful write permissions. Published JARVIS Web 1.1 to the `main` branch of `shabbykhan1-star/jarvis-web` at commit `490ce53140c4535e0b2674ab1b74c5d09fff81a2`.
+**Built:** Voice playback settings for en-IN, ur-PK and hi-IN system voices; manual preview; optional auto-speaking for chat replies; saved preferences; voice feature explanation and updated test list. Preserved prior browser data schema/key to avoid migrations. Bumped service worker cache key.
 
-**Published:** `index.html`, `app.js`, `sw.js`, `manifest.webmanifest`, two PNG app icons, `README.md`, and this development log.
+**Testing:** JS syntax/static UI checks and local Chromium smoke test where available. Actual iPhone Safari/system-voice behavior is NOT verified without a physical iPhone and hosted URL.
 
-**Prototype functions:** iPhone-responsive dashboard, Wednesday/Sunday creator planning, tasks, local notes/preferences, idea and thumbnail brief suggestions, basic offline support, command-based replies, optional device text-to-speech with configurable Hinglish-friendly voices, and JSON backup/import. The project is an offline, rule-based starter — not a live connected LLM.
+**Limitations:** No model backend, no server connection, no live trend verification, no autonomous thumbnail generation, no iPhone-wide control, no always-on microphone, no real human emotions. Browser data is not synced.
 
-**Verification:** GitHub `main` tree confirms all 8 source files including PNG icons. Local `node --check` passed for `app.js` and `sw.js`. Actual iPhone Safari testing and GitHub Pages deployment have **not** been verified.
+**Next priorities:** (1) User publishes or connects a persistent private source repository; (2) test Safari install and voice on device; (3) secure key-protected API server; (4) personal memory syncing with privacy controls; (5) relevant creator tools; (6) proper push notifications with explicit permission.
 
-**Next steps:**
-1. Owner opens GitHub repository Settings → Pages, selects Deploy from a branch → `main` → `/(root)`, and saves.
-2. Verify the Pages URL actually responds before claiming the app is live.
-3. Test iPhone Safari Home Screen install, voice, task persistence, and backup.
-4. Add safe, secure AI backend (no API keys in this public repo).
-5. Enhance privacy controls, creator workflows, trend research, and permitted external actions.
+**Security:** Never put API keys or personal data in public GitHub Pages source. Confirm user permission before external actions.
 
-**Limits:** No autonomous phone control; no always-on microphone; no live trend checking; no autonomous image generation; no genuine human feelings. Do not commit passwords, API secrets, or personal data. The browser memory is local and is not synced to GitHub.
+## 2026-10-24 — WEB 1.2 response quality fix + optional AI Brain
+
+**User feedback:** The iPhone website loaded, but entering `Tu zyada bolta ni` returned the same rigid offline fallback. This is a valid product failure; version 1.1 was not a real conversational model.
+
+**Work completed locally:** Improved message routing and direct response to feedback, added optional AI Brain configuration in Setup (Worker URL, session-only access token, opt-in sharing of saved notes/tasks), async requests with timeouts, useful error messages, and optional Cloudflare Worker `worker/worker.mjs` that can call OpenAI Responses API using server secrets. Updated the offline cache version and usage documentation.
+
+**Verification:** Node syntax checks and local Node tests passed for mock conversational gateway, origin enforcement, unauthorized access, request handling, no default private-context sharing, and the exact complaint from the iPhone screenshot. Chromium was blocked by sandbox administrator; the Worker has NOT been deployed and no live model has been called. Device acceptance test is still needed.
+
+**Remaining:** User must deploy private backend and configure permitted API credentials (separate budget/permission) before calling this a real conversational AI. Set Cloudflare rate limits/budgets; browser does not get access to server's paid API key. No automatic phone control, browsing, or thumbnail image generation yet.

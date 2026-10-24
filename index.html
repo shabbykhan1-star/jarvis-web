@@ -20,8 +20,8 @@
 <body>
   <main class="wrap">
     <header class="top">
-      <div class="logo"><div class="orb" aria-hidden="true">◎</div><div><div class="eyebrow">Personal assistant</div><h1>JARVIS <span style="color:#78a3ba;font-size:10px;letter-spacing:0">WEB 1.1</span></h1></div></div>
-      <span class="pill"><span class="dot"></span> Local mode</span>
+      <div class="logo"><div class="orb" aria-hidden="true">◎</div><div><div class="eyebrow">Personal assistant</div><h1>JARVIS <span style="color:#78a3ba;font-size:10px;letter-spacing:0">WEB 1.2</span></h1></div></div>
+      <span class="pill"><span class="dot"></span> <span id="top-mode">Local mode</span></span>
     </header>
 
     <section id="page-home" class="tabview active" aria-label="Dashboard">
@@ -60,23 +60,31 @@
     </section>
 
     <section id="page-assistant" class="tabview" aria-label="Assistant">
-      <div class="section"><h2>Talk to JARVIS</h2><span class="tag">Local commands</span></div>
+      <div class="section"><h2>Talk to JARVIS</h2><span class="tag" id="mode-tag">Offline assistant</span></div>
       <div class="card"><div class="mini-title">Mood check-in (optional)</div><div class="mood" id="mood-choices"><button data-mood="focused">🎯 Focused</button><button data-mood="tired">😮‍💨 Tired</button><button data-mood="excited">⚡ Excited</button><button data-mood="stressed">🌧️ Stressed</button></div><p class="trust" id="mood-response" style="margin-bottom:0">Select a mood for a response style. JARVIS does not experience feelings.</p></div>
-      <div class="section"><h3>Command console</h3><button id="speak-latest" class="btn ghost small">🔊 Speak reply</button></div>
+      <div class="section"><h3>JARVIS conversation</h3><button id="speak-latest" class="btn ghost small">🔊 Speak reply</button></div>
       <div class="card"><div class="chat" id="chat" aria-live="polite"></div><div class="form-row"><input class="input" id="chat-input" maxlength="350" placeholder="Try: meri next upload kab hai?"/><button class="btn primary" id="send-chat">Send</button></div><p class="trust">Try: <b>add task: shoot intro</b> · <b>yaad rakho: no AI face</b> · <b>thumbnail idea</b> · <b>next upload</b>. iPhone keyboard mic can be used for dictation.</p></div>
       <div class="section"><h3>Hinglish voice options</h3></div>
       <div class="card"><div class="form-group"><label for="voice-language">iPhone voice accent (availability varies)</label><select id="voice-language" class="input"><option value="en-IN">Indian English — Hinglish-friendly</option><option value="ur-PK">Urdu — Pakistan</option><option value="hi-IN">Hindi — India</option></select></div><label class="voice-toggle"><input id="auto-speak" type="checkbox"/> <span>Speak each JARVIS chat reply automatically</span></label><div class="spacer"></div><button class="btn secondary" id="voice-preview">🔊 Test Hinglish voice</button><p class="trust">Ye iPhone ki available system voices use karta hai. Accent imperfect ho sakta hai. Voice sunne ke liye user interaction chahiye; app background mein hamesha listen nahi karti. Dictation ke liye keyboard microphone use karo.</p></div>
-      <p class="trust">Ye rule-based assistant hai; ChatGPT API ya real-time web access abhi connected nahi hai.</p>
+      <p class="trust">Offline commands work without internet. Real AI conversation requires a separately configured private AI Worker. Messages sent to the backend leave this device; notes/tasks are shared only if you turn on context sharing in Setup.</p>
     </section>
 
     <section id="page-settings" class="tabview" aria-label="Settings">
       <div class="section"><h2>Settings & Testing</h2></div>
+      <div class="card"><div class="mini-title">AI BRAIN — optional secure connection</div><h3 style="margin:8px 0">Make JARVIS conversational</h3><p class="sub">Real AI requires a deployed private Worker. Never paste an OpenAI API key here. This form needs only your Worker URL and a separate JARVIS access code; the code lasts for this browser session.</p>
+        <div class="form-group"><label for="brain-url">Worker HTTPS URL</label><input id="brain-url" class="input" inputmode="url" autocapitalize="off" autocomplete="off" placeholder="https://jarvis-brain.yourname.workers.dev"/></div>
+        <div class="form-group"><label for="brain-token">JARVIS access code (not your API key)</label><input id="brain-token" class="input" type="password" autocapitalize="off" autocomplete="off" placeholder="Temporary private code"/></div>
+        <label class="voice-toggle"><input type="checkbox" id="brain-share"/><span>Allow AI to read my saved notes, preferences and open tasks with each message</span></label>
+        <p class="trust">Chat messages always go to the connected AI service. Context sharing is OFF by default. AI session code is not exported in backups or saved to long-term storage.</p>
+        <div class="btn-row"><button class="btn primary" id="save-brain">Save AI connection</button><button class="btn secondary" id="disconnect-brain">Disconnect</button></div>
+        <p class="trust" id="brain-status">Offline · AI not connected</p>
+      </div>
       <div class="card"><h3>Local data backup</h3><p class="sub">Export your tasks, notes and preferences to a JSON file. Import it again to restore. Don't share private notes publicly.</p><div class="btn-row"><button class="btn primary" id="export-data">Export backup</button><button class="btn secondary" id="import-trigger">Import backup</button></div><input type="file" id="import-file" accept="application/json,.json" class="hidden"/><div class="divider"></div><button class="btn danger" id="reset-data">Reset all local data</button></div>
-      <div class="section"><h3>Build progress</h3></div><div class="card"><div class="mini-title">JARVIS WEB 1.1 · 24 October 2026</div><h3 style="margin:8px 0">Hinglish voice settings</h3><p class="sub">Voice accent select karo, reply autoplay on/off karo aur speaking test karo. Ye system text-to-speech hai — real conversational AI ya always-listening voice agent nahi.</p><p class="sub">Next priority: secure AI backend, mobile-first testing, private code sync.</p></div>
+      <div class="section"><h3>Build progress</h3></div><div class="card"><div class="mini-title">JARVIS WEB 1.2 · 24 October 2026</div><h3 style="margin:8px 0">Hinglish voice settings</h3><p class="sub">Voice accent select karo, reply autoplay on/off karo aur speaking test karo. Voice uses iPhone speech synthesis; real conversation becomes available only when the private AI Worker is configured. No always-listening wake word.</p><p class="sub">Next priority: deploy private AI Worker, test Hinglish conversation, and improve iPhone voice.</p></div>
       <div class="section"><h3>iPhone test checklist</h3></div>
       <div class="card"><ol class="testlist"><li>Add a new task. Reload. Confirm it remains saved.</li><li>Check Wednesday and Sunday dates.</li><li>Generate 3 ideas and save one as a task.</li><li>Save a preference, refresh, and confirm it stays.</li><li>Export data, then test import with the same file.</li><li>After HTTPS hosting, Safari → Share → Add to Home Screen.</li></ol></div>
-      <p class="trust">Offline use requires loading the hosted app online at least once so its service worker can cache the files. This version has no backend, account login, live alerts, real AI model, or image generation.</p>
-      <div style="height:20px"></div><div class="text-end small muted">JARVIS WEB 1.1 · Private prototype</div>
+      <p class="trust">Offline use requires loading the hosted app online at least once. AI brain needs a separately deployed Worker and authorized API usage; this Pages site itself does not contain an AI key, account login, live alerts, or image generation.</p>
+      <div style="height:20px"></div><div class="text-end small muted">JARVIS WEB 1.2 · Private prototype</div>
     </section>
   </main>
 

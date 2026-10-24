@@ -2,6 +2,40 @@
 const KEY='jarvis-web-2026-v1';
 const defaultStore=()=>({tasks:[],notes:[],prefs:{channel:'Shabby Vlogs',thumbnail:'Natural, realistic, clickable. Preserve original face; avoid over-AI look. Clean, curiosity-driven composition.',tone:'Friendly Roman Urdu / Hinglish. Call me boss. Be practical and clear.',voiceLang:'en-IN',autoSpeak:false},mood:'',ideaOffset:0,chat:[]});
 let s=readStore(), mission='',lastReply='';
+const BRAIN_URL_KEY='jarvis-worker-url-v2';
+const SHARE_CONTEXT_KEY='jarvis-ai-share-context-v2';
+let brainUrl='',brainToken='',shareContext=false,aiBusy=false;
+try{brainUrl=localStorage.getItem(BRAIN_URL_KEY)||'';shareContext=localStorage.getItem(SHARE_CONTEXT_KEY)==='yes';brainToken=sessionStorage.getItem('jarvis-temporary-brain-token')||'';}catch{}
+function normalizeBrainUrl(raw){
+ try{const url=new URL(String(raw||'').trim());if(url.protocol!=='https:'||url.username||url.password||url.search||url.hash||url.href.length>350) return '';
+ return url.origin+url.pathname.replace(/\/+$/,'');}catch{return '';}
+}
+function brainReady(){return !!(brainUrl&&brainToken);}
+function renderBrain(){
+ const mode=brainReady()?'AI ready (not yet tested)':brainUrl?'Needs access code':'Offline · AI not connected';
+ $('brain-status').textContent=mode;
+ $('top-mode').textContent=brainReady()?'AI configured':'Local mode';
+ $('mode-tag').textContent=brainReady()?'AI setup saved':'Offline assistant';
+ $('brain-url').value=brainUrl;$('brain-token').value=brainToken;
+ $('brain-share').checked=shareContext;
+}
+function localCommand(q){return /^(?:add task|task add|task:|yaad rakho|remember|note:)\s*/i.test(q)||
+ /\b(next upload|upload kab|video kab|wednesday|sunday|thumbnail idea|tasks pending|pending tasks|schedule)\b/i.test(q);}
+async function askBrain(){
+ const history=s.chat.slice(-12).map(m=>({role:m.role==='user'?'user':'assistant',content:String(m.body).slice(0,650)}));
+ const context=shareContext?{channel:s.prefs.channel,thumbnailStyle:s.prefs.thumbnail,tone:s.prefs.tone,openTasks:s.tasks.filter(t=>!t.done).slice(0,8).map(t=>t.title),notes:s.notes.slice(0,6).map(n=>n.text),nextUpload:nextUpload().day+' '+display(nextUpload().date)}:null;
+ const ctrl=new AbortController();const timeout=setTimeout(()=>ctrl.abort(),22000);
+ try{
+  const result=await fetch(brainUrl+'/chat',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+brainToken},body:JSON.stringify({messages:history,context}),signal:ctrl.signal,cache:'no-store'});
+  if(result.status===401||result.status===403)throw Error('Access code galat hai ya backend permission nahi de raha. Setup check karo.');
+  if(result.status===429)throw Error('AI usage limit hit hui hai. Thori der baad try karna.');
+  if(!result.ok)throw Error('AI server ne response nahi diya (status '+result.status+').');
+  const data=await result.json();if(typeof data.reply!=='string'||!data.reply.trim())throw Error('AI ne empty jawab diya.');
+  return data.reply.trim().slice(0,2200);
+ }catch(e){return 'Boss, AI connection is waqt kaam nahi kar rahi: '+(e.name==='AbortError'?'request timeout ho gaya.':e.message||'network issue.')+' Offline tasks aur upload schedule phir bhi available hain.';}
+ finally{clearTimeout(timeout);}
+}
+
 function readStore(){try{const x=JSON.parse(localStorage.getItem(KEY));if(!x||!Array.isArray(x.tasks)||!Array.isArray(x.notes)||!x.prefs||typeof x.prefs!=='object')return defaultStore();return {...defaultStore(),...x,prefs:{...defaultStore().prefs,...x.prefs}};}catch{return defaultStore();}}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(s));}catch{toast('Browser storage unavailable. Backup your data.');}}
 const $=id=>document.getElementById(id);
@@ -67,19 +101,33 @@ function pushChat(role,body,save=true){
  if(save)persist();renderChat();
  if(role==='assistant'&&s.prefs.autoSpeak)speakText(body);
 }
-function renderChat(){let chat=s.chat;if(!chat.length){chat=[{role:'assistant',body:'Boss, main JARVIS WEB 1.0 hoon. Abhi basic offline commands samajhta hoon. Task add karne, video ideas aur upload date ke liye bolo.'}];}
+function renderChat(){let chat=s.chat;if(!chat.length){chat=[{role:'assistant',body:brainReady()?'Haan Boss, AI brain configured hai. Apni baat bolo — AI server se jawab aayega.':'Haan Boss! Abhi offline hoon; tasks, next upload aur thumbnail ideas mein help kar sakta hoon. Natural AI conversation ke liye Setup mein AI Brain connect karna hoga.'}];}
 $('chat').innerHTML=chat.map(m=>`<div class="bubble ${m.role==='user'?'user':'assistant'}">${html(m.body)}</div>`).join('');$('chat').scrollTop=$('chat').scrollHeight;}
 function respond(raw){const q=raw.toLowerCase().trim();let match;
-if((match=raw.match(/^(?:add task|task add|task:)\s*(.*)$/i))){return addTask(match[1])?'Task save ho gaya, boss. Tasks tab mein check kar lo.':'Task ka naam likho — jaise add task: shoot intro.';}
-if((match=raw.match(/^(?:yaad rakho|remember|note:)\s*(.*)$/i))){return addNote(match[1])?'Boss, ye note is iPhone ke browser storage mein save kar diya.':'Kya note save karna hai?';}
-if(/upload|wednesday|sunday|video kab|date|schedule|kab hai/.test(q)){const n=nextUpload();return `Boss, next upload ${n.day}, ${display(n.date)} ko hai. Wednesday aur Sunday hamare weekly upload days hain.`;}
-if(/thumbnail|thumb|title|idea|topic|trend|vlog/.test(q)){const item=currentIdeas[0]||ideas[0];return `Ek curated idea: ${item.title} — Thumbnail: ${item.shot} (Ye live trending verification nahi hai.) Ideas tab mein aur options hain.`;}
-if(/tasks|pending|kaam|to.do/.test(q)){let n=s.tasks.filter(x=>!x.done);return n.length?`Boss, ${n.length} pending tasks hain. Sab se pehla: ${n[0].title}`:'Abhi koi pending task nahi. Tasks tab mein add kar sakte ho.';}
-if(/stress|tired|thak|down|sad|pareshan|views kam/.test(q)){return 'Samajh gaya, boss. Agar energy low hai to aaj ek manageable step choose karte hain: agle vlog ka hook likho, phir rest. Chaho to main idea suggest karun.';}
-if(/hi|hello|salam|jarvis|assalam|hey/.test(q)){return 'Haan boss, JARVIS ready. Main tasks, uploads, memory aur curated video ideas mein help kar sakta hoon.';}
-return 'Boss, is prototype mein main abhi limited offline commands samajhta hoon. Try: next upload, thumbnail idea, add task: edit vlog, yaad rakho: natural face. Open-ended AI chat phase 2 mein aayegi.';
+if((match=raw.match(/^(?:add task|task add|task:)\s*(.*)$/i))){return addTask(match[1])?'Boss, task save ho gaya! Tasks tab mein dekh lo.':'Task ka naam batao, jaise add task: edit vlog.';}
+if((match=raw.match(/^(?:yaad rakho|remember|note:)\s*(.*)$/i))){return addNote(match[1])?'Ye baat is iPhone ke browser mein note kar li, Boss.':'Kya note save karna hai Boss?';}
+if(/upload|wednesday|sunday|video kab|schedule|kab hai/.test(q)){const n=nextUpload();return `Boss, next upload ${n.day}, ${display(n.date)} ko hai. Hum Wednesday aur Sunday ko videos upload karte hain.`;}
+if(/thumbnail|thumb|title|idea|topic|trend|vlog/.test(q)){const item=currentIdeas[0]||ideas[0];return `Boss, ye curated idea try karo: ${item.title}. Natural thumbnail: ${item.shot}. Live trends confirm karne ke liye online research feature chahiye.`;}
+if(/\b(tasks|pending|kaam|to.do)\b/.test(q)){let n=s.tasks.filter(x=>!x.done);return n.length?`Boss, ${n.length} pending tasks hain. Agla kaam: ${n[0].title}`:'Boss, abhi koi pending task nahi. Tasks tab mein add kar sakte ho.';}
+if(/stress|tired|thak|down|sad|pareshan|views kam/.test(q)){return 'Boss, samajh gaya. Aaj sab kuch ek saath karna zaroori nahi. Pehle ek manageable kaam chun lete hain. Tum kis cheez par focus karna chahte ho?';}
+if(/zyada bolta|zyada bol|zyaada|bolta ni|bolta nahi|kam bol|same reply|repeat|boring|basic|gussa|bakwas|bekar/.test(q)){return 'Sahi keh rahe ho Boss. Pehle wala jawab baar-baar repeat hota tha kyunki main offline rule-based mode mein hoon. Maine is bug ka response improve kiya hai, lekin real natural conversation ke liye AI Brain setup zaroori hai.';}
+if(/^(?:hi|hello|salam|assalam|hey|jarvis|aoa|kya haal|how are you)[!?. ]*$/i.test(q)){return 'Haan Boss! Main yahan hoon. Aaj YouTube planning karni hai ya kisi aur baat par help chahiye?';}
+if(/\b(thanks|shukriya|thank you)\b/.test(q)){return 'Khushi hui Boss! Agla kaam batao.';}
+const variants=[
+ 'Boss, tumhari baat suni. Iska genuinely intelligent jawab dene ke liye AI Brain connect karna hoga. Filhaal main offline mode mein hoon — koi specific task ya upload question hai?',
+ 'Samajh raha hoon Boss, lekin bina AI backend ke main khuli conversation ka sahi jawab nahi de sakta. Main jhoota smart banne ke bajaye ye clear rakhunga. Setup mein AI Brain connection available hai.',
+ 'Boss, tumhe har baar same scripted jawab nahi milna chahiye. Ye version offline commands chala sakta hai, lekin natural conversation ke liye AI service connect karni hogi. Koi task add karna hai?'
+ ];
+ return variants[(s.chat.filter(m=>m.role==='user').length-1)%variants.length];
 }
-function sendChat(){let v=$('chat-input').value.trim();if(!v)return;$('chat-input').value='';pushChat('user',v);pushChat('assistant',respond(v));}
+async function sendChat(){
+ if(aiBusy)return;const v=$('chat-input').value.trim();if(!v)return;
+ $('chat-input').value='';pushChat('user',v);
+ if(!brainReady()||localCommand(v)){pushChat('assistant',respond(v));return;}
+ aiBusy=true;$('send-chat').disabled=true;$('send-chat').textContent='Thinking…';
+ try{pushChat('assistant',await askBrain());}
+ finally{aiBusy=false;$('send-chat').disabled=false;$('send-chat').textContent='Send';}
+}
 function renderMood(){document.querySelectorAll('[data-mood]').forEach(b=>b.classList.toggle('selected',b.dataset.mood===s.mood));const val={focused:'Great. Ek important task choose karke start karte hain.',tired:'Thakan ho to chhota task aur break dono theek hain.',excited:'Nice energy! Isko ek video idea ya script hook mein lagate hain.',stressed:'Aaj ka workload simple karte hain: sab se zaroori ek kaam.'};$('mood-response').textContent=val[s.mood]||'Select a mood for a response style. JARVIS does not experience feelings.';}
 async function copy(txt){try{await navigator.clipboard.writeText(txt);toast('Copied');}catch{toast('Copy unavailable. Select text manually.');}}
 function download(name,data,type){const b=new Blob([data],{type});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),3000);}
@@ -104,8 +152,16 @@ $('speak-latest').onclick=()=>speakText(lastReply||'Boss, JARVIS web prototype r
 $('export-data').onclick=()=>download('jarvis-backup-'+iso(pDate())+'.json',JSON.stringify({version:1,exported:new Date().toISOString(),data:s},null,2),'application/json');
 $('import-trigger').onclick=()=>$('import-file').click();
 $('import-file').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>2_000_000)throw Error('File too large');const raw=JSON.parse(await f.text());let data=raw.data;if(!data||!Array.isArray(data.tasks)||!Array.isArray(data.notes)||!data.prefs||typeof data.prefs!=='object')throw Error('Unrecognized backup');if(!confirm('Replace current JARVIS tasks and memory with this backup?'))return;s={...defaultStore(),...data,chat:Array.isArray(data.chat)?data.chat.slice(-30):[],prefs:{...defaultStore().prefs,...data.prefs}};persist();refresh();toast('Backup imported');}catch(err){toast('Import failed: '+err.message);}finally{e.target.value='';}};
+$('save-brain').onclick=()=>{
+ const url=normalizeBrainUrl($('brain-url').value);
+ if($('brain-url').value.trim()&&!url){toast('Valid HTTPS Worker URL likho');return;}
+ brainUrl=url;brainToken=String($('brain-token').value||'').trim().slice(0,500);shareContext=$('brain-share').checked;
+ try{localStorage.setItem(BRAIN_URL_KEY,brainUrl);localStorage.setItem(SHARE_CONTEXT_KEY,shareContext?'yes':'no');if(brainToken)sessionStorage.setItem('jarvis-temporary-brain-token',brainToken);else sessionStorage.removeItem('jarvis-temporary-brain-token');}catch{toast('Settings session mein hi rahengi');}
+ renderBrain();renderChat();toast(brainReady()?'AI configuration saved; try a message':'Offline mode saved');
+};
+$('disconnect-brain').onclick=()=>{brainUrl='';brainToken='';shareContext=false;try{localStorage.removeItem(BRAIN_URL_KEY);localStorage.removeItem(SHARE_CONTEXT_KEY);sessionStorage.removeItem('jarvis-temporary-brain-token');}catch{}renderBrain();renderChat();toast('AI disconnected');};
 $('reset-data').onclick=()=>{if(!confirm('Permanently clear all JARVIS data saved on this device?'))return;s=defaultStore();persist();refresh();toast('Local data cleared');};
 }
-function refresh(){renderHome();renderTasks();renderIdeas();renderMemory();renderChat();renderMood();}
+function refresh(){renderHome();renderTasks();renderIdeas();renderMemory();renderChat();renderMood();renderBrain();}
 refresh();wire();
 if('serviceWorker' in navigator && ['https:','http:'].includes(location.protocol))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));

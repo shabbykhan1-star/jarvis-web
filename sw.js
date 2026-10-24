@@ -1,5 +1,5 @@
 'use strict';
-const CACHE = 'jarvis-web-v1-1-2026-10-24';
+const CACHE = 'jarvis-web-v1-2-2026-10-24';
 const FILES = ['./','./index.html','./app.js','./manifest.webmanifest','./icons/jarvis-192.png','./icons/jarvis-512.png'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())); });
